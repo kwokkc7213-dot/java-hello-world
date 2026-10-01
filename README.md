@@ -8,6 +8,17 @@
 ./run.sh
 ```
 
+`run.sh` 會做三件事（你睇住佢跑就學到 build 流程）：
+1. `javac -encoding UTF-8 -parameters -cp "lib/*"` — 編譯 `src/main/java` 下面嘅 `.java`
+   （`-parameters` 好重要：冇佢，Spring 讀唔到 `@RequestParam` 個名，API 會 500）
+2. `cp -r src/main/resources/*` — 將 `index.html`、`application.properties` 抄去 classpath
+3. `java -cp "target/classes:lib/*" com.example.hello.HelloApplication` — 起 Tomcat（port 8080）
+
+`lib/` 下面 34 個 jar 係 Spring Boot 3.2.5 + Spring Framework 6.1.6 + Jackson + Tomcat 嘅
+dependency（用 curl 逐個由 Maven Central 下載）。喺呢台 VM，Maven 自身嘅 HTTP client
+過唔到 egress proxy，所以唔用 `mvn package`，改用 `javac` 直接編譯——但 `pom.xml`
+照保留，喺你自己電腦（正常網絡）`mvn package` 會如常運作。
+
 然後開瀏覽器去 http://localhost:8080，或用 curl 試 API：
 
 ```bash
