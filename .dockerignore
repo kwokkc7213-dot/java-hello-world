@@ -1,0 +1,7 @@
+# Docker build 唔需要嘅嘢（lib/ 係本地 sandbox 專用 jars，Render build 會用 Maven 自己下載）
+target/
+lib/
+.git
+.idea/
+.vscode/
+*.class
